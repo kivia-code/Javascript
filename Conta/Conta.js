@@ -1,24 +1,20 @@
-import { Cliente } from "./Cliente.js";
-export class ContaCorrente {
-  //atributos
-  agencia;
-  _cliente;
-  _saldo = 0;
-  static nrmContas=0;
-
-  //constructor
-  constructor(cliente, agencia, saldo,nrmContas) {
+//Classe Abstrata
+export class Conta {
+  constructor(saldoInicial, cliente, agencia) {
+    if (this.constructor == Conta) {
+      throw new Error(
+        "Você não deveria instanciar um objeto do tipo Conta Diretamente, pois se trata de classe abstrata"
+      );
+    }
+    this._saldo = saldoInicial;
     this._cliente = cliente;
-    this.agencia = agencia;
-    this._saldo = saldo;
-    ContaCorrente.nrmContas +=1;
-}
+    this._agencia = agencia;
+  }
 
   //getters and setters
   get cliente() {
     return this._cliente;
   }
-
 
   get saldo() {
     return this._saldo;
@@ -31,10 +27,17 @@ export class ContaCorrente {
   }
 
   //metodos
+
+  //metodo abstrato
   sacar(valor) {
+    throw new Error("O método sacar da conta é abstrato");
+  }
+
+  _sacar(valor, taxa) {
+    const valorSacado = taxa * valor;
     if (this._saldo >= valor) {
       this._saldo -= valor;
-      return valor;
+      return valorSacado;
     }
   }
 
